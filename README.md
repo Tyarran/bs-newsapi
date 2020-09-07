@@ -1,4 +1,6 @@
-# My New Project
+# bs-newsapi
+
+A [ReScript](https://rescript-lang.org/) binding for [NewsAPI](https://newsapi.org/)
 
 ## Installation
 
@@ -15,5 +17,5 @@ npm install
 ## Run
 
 ```sh
-node src/Demo.bs.js
+node src/Main.bs.js
 ```
