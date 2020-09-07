@@ -1,272 +1,139 @@
-module Country = {
-  type t =
-    | Ae
-    | Ar
-    | At
-    | Au
-    | Be
-    | Bg
-    | Br
-    | Ca
-    | Ch
-    | Cn
-    | Co
-    | Cu
-    | Cz
-    | De
-    | Eg
-    | Fr
-    | Gb
-    | Gr
-    | Hk
-    | Hu
-    | Id
-    | Ie
-    | Il
-    | In
-    | It
-    | Jp
-    | Kr
-    | Lt
-    | Lv
-    | Ma
-    | Mx
-    | My
-    | Ng
-    | Nl
-    | No
-    | Nz
-    | Ph
-    | Pl
-    | Pt
-    | Ro
-    | Rs
-    | Ru
-    | Sa
-    | Se
-    | Sg
-    | Si
-    | Sk
-    | Th
-    | Tr
-    | Tw
-    | Ua
-    | Us
-    | Ve
-    | Za
+type t = (string, string)
 
-  let make = countryName => {
-    switch countryName {
-    | "ae" => Ae
-    | "ar" => Ar
-    | "at" => At
-    | "au" => Au
-    | "be" => Be
-    | "bg" => Bg
-    | "br" => Br
-    | "ca" => Ca
-    | "ch" => Ch
-    | "cn" => Cn
-    | "co" => Co
-    | "cu" => Cu
-    | "cz" => Cz
-    | "de" => De
-    | "eg" => Eg
-    | "fr" => Fr
-    | "gb" => Gb
-    | "gr" => Gr
-    | "hk" => Hk
-    | "hu" => Hu
-    | "id" => Id
-    | "ie" => Ie
-    | "il" => Il
-    | "in" => In
-    | "it" => It
-    | "jp" => Jp
-    | "kr" => Kr
-    | "lt" => Lt
-    | "lv" => Lv
-    | "ma" => Ma
-    | "mx" => Mx
-    | "my" => My
-    | "ng" => Ng
-    | "nl" => Nl
-    | "no" => No
-    | "nz" => Nz
-    | "ph" => Ph
-    | "pl" => Pl
-    | "pt" => Pt
-    | "ro" => Ro
-    | "rs" => Rs
-    | "ru" => Ru
-    | "sa" => Sa
-    | "se" => Se
-    | "sg" => Sg
-    | "si" => Si
-    | "sk" => Sk
-    | "th" => Th
-    | "tr" => Tr
-    | "tw" => Tw
-    | "ua" => Ua
-    | "us" => Us
-    | "ve" => Ve
-    | "za" => Za
-    | _ => raise(Not_found)
-    }
-  }
-
-  let toString = country => {
-    switch country {
-    | Ae => "ae"
-    | Ar => "ar"
-    | At => "at"
-    | Au => "au"
-    | Be => "be"
-    | Bg => "bg"
-    | Br => "br"
-    | Ca => "ca"
-    | Ch => "ch"
-    | Cn => "cn"
-    | Co => "co"
-    | Cu => "cu"
-    | Cz => "cz"
-    | De => "de"
-    | Eg => "eg"
-    | Fr => "fr"
-    | Gb => "gb"
-    | Gr => "gr"
-    | Hk => "hk"
-    | Hu => "hu"
-    | Id => "id"
-    | Ie => "ie"
-    | Il => "il"
-    | In => "in"
-    | It => "it"
-    | Jp => "jp"
-    | Kr => "kr"
-    | Lt => "lt"
-    | Lv => "lv"
-    | Ma => "ma"
-    | Mx => "mx"
-    | My => "my"
-    | Ng => "ng"
-    | Nl => "nl"
-    | No => "no"
-    | Nz => "nz"
-    | Ph => "ph"
-    | Pl => "pl"
-    | Pt => "pt"
-    | Ro => "ro"
-    | Rs => "rs"
-    | Ru => "ru"
-    | Sa => "sa"
-    | Se => "se"
-    | Sg => "sg"
-    | Si => "si"
-    | Sk => "sk"
-    | Th => "th"
-    | Tr => "tr"
-    | Tw => "tw"
-    | Ua => "ua"
-    | Us => "us"
-    | Ve => "ve"
-    | Za => "za"
-    }
-  }
+let countryCodes = list{
+  "ae",
+  "ar",
+  "at",
+  "au",
+  "be",
+  "bg",
+  "br",
+  "ca",
+  "ch",
+  "cn",
+  "co",
+  "cu",
+  "cz",
+  "de",
+  "eg",
+  "fr",
+  "gb",
+  "gr",
+  "hk",
+  "hu",
+  "id",
+  "ie",
+  "il",
+  "in",
+  "it",
+  "jp",
+  "kr",
+  "lt",
+  "lv",
+  "ma",
+  "mx",
+  "my",
+  "ng",
+  "nl",
+  "no",
+  "nz",
+  "ph",
+  "pl",
+  "pt",
+  "ro",
+  "rs",
+  "ru",
+  "sa",
+  "se",
+  "sg",
+  "si",
+  "sk",
+  "th",
+  "tr",
+  "tw",
+  "ua",
+  "us",
+  "ve",
+  "za",
 }
 
-module Category = {
-  type t =
-    | Business
-    | Entertainment
-    | General
-    | Health
-    | Science
-    | Sports
-    | Technology
-
-  let toString = category => {
-    switch category {
-    | Business => "business"
-    | Entertainment => "entertainment"
-    | General => "general"
-    | Health => "health"
-    | Science => "science"
-    | Sports => "sports"
-    | Technology => "technology"
-    }
-  }
+let categories = list{
+  "business",
+  "entertainment",
+  "general",
+  "health",
+  "science",
+  "sports",
+  "technology",
 }
 
-module Language = {
-  type t =
-    | Ar
-    | De
-    | En
-    | Es
-    | Fr
-    | He
-    | It
-    | Nl
-    | No
-    | Pt
-    | Ru
-    | Se
-    | Ud
-    | Zh
-
-  let toString = language => {
-    switch language {
-    | Ar => "ar"
-    | De => "de"
-    | En => "en"
-    | Es => "es"
-    | Fr => "fr"
-    | He => "he"
-    | It => "it"
-    | Nl => "nl"
-    | No => "no"
-    | Pt => "pt"
-    | Ru => "ru"
-    | Se => "se"
-    | Ud => "ud"
-    | Zh => "zh"
-    }
-  }
+let languages = list{
+  "ar",
+  "de",
+  "en",
+  "es",
+  "fr",
+  "he",
+  "it",
+  "nl",
+  "no",
+  "pt",
+  "ru",
+  "se",
+  "ud",
+  "zh",
 }
 
-type t =
-  | Country(Country.t)
-  | Category(Category.t)
-  | Source(string)
-  | Q(string)
-  | PageSize(int)
-  | Page(int)
-  | APIKey(string)
-  | Language(Language.t)
-
-let parameterReader = param => {
-  switch param {
-  | Country(country) => ("country", Country.toString(country))
-  | Category(category) => ("category", Category.toString(category))
-  | Source(value) => ("source", value)
-  | Q(values) => ("q", values)
-  | PageSize(value) => ("pageSize", string_of_int(value))
-  | Page(value) => ("Page", string_of_int(value))
-  | APIKey(value) => ("apiKey", value)
-  | Language(language) => ("language", Language.toString(language))
+let country = countryCode => {
+  let country = switch Belt.List.has(countryCodes, countryCode, (a, b) => a == b) {
+  | true => countryCode
+  | false => raise(Not_found)
   }
+  ("country", country)
 }
 
-let rec buildQuerystring = (~url=?, params) => {
+let category = categoryName => {
+  let category = switch Belt.List.has(categories, categoryName, (a, b) => a == b) {
+  | true => categoryName
+  | false => raise(Not_found)
+  }
+  ("category", category)
+}
+
+let language = languageCode => {
+  let language = switch Belt.List.has(languages, languageCode, (a, b) => a == b) {
+  | true => languageCode
+  | false => raise(Not_found)
+  }
+  ("language", language)
+}
+
+let stringParameter = (parameterName: string, stringValue: string) => {
+  (parameterName, stringValue)
+}
+
+let intParameter = (parameterName: string, intValue: int) => {
+  (parameterName, string_of_int(intValue))
+}
+
+let source = stringParameter("source")
+
+let q = stringParameter("q")
+
+let pageSize = intParameter("pageSize")
+
+let page = intParameter("page")
+let apiKey = stringParameter("apiKey")
+
+let rec buildQuerystring = (~url=?, parameters) => {
   let url = switch url {
   | Some(url) => url
   | None => ""
   }
-  switch params {
+  switch parameters {
   | list{} => url
   | list{param, ...rest} => {
-      let (name, value) = parameterReader(param)
+      let (name, value) = param
       let prefix = switch url {
       | "" => ""
       | _ => "&"

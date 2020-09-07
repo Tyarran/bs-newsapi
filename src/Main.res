@@ -6,14 +6,15 @@ let apiKey = switch Js.Dict.get(env, "NEWSAPI_API_KEY") {
 }
 let api = NewsAPI.make(apiKey)
 
+open Parameter
+
 let parameters = {
-  open Parameter
-  list{Country(Fr), Category(Health)}
+  list{country("fr"), category("health")}
 }
 
 let other = {
   open Parameter
-  list{Language(Language.Fr), Q("bitcoin")}
+  list{language("fr"), q("bitcoin")}
 }
 
 NewsAPI.topHeadlines(api, parameters) |> Js.Promise.then_(value =>
