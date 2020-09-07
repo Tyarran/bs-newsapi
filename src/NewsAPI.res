@@ -5,40 +5,37 @@ let make = apiKey => {
 }
 
 let topHeadlines = (api, parameters) => {
+  open Js.Promise
   let querystring = Parameter.buildQuerystring(parameters)
-  Fetcher.fetchArticles(api.apiKey, Fetcher.TopHeadlines, querystring) |> Js.Promise.then_(data => {
-    switch data {
-    | Ok(value: Fetcher.articleResponse) => {
-        let articles = value.articles |> Array.map(Article.fromAPI)
-        Ok(articles) |> Js.Promise.resolve
-      }
-    | Error(value) => Error(value) |> Js.Promise.resolve
-    }
+  Fetcher.fetchArticles(
+    api.apiKey,
+    Fetcher.TopHeadlines,
+    querystring,
+  ) |> then_((response: Fetcher.articlePayload) => {
+    Array.map(Article.fromAPI, response.articles) |> resolve
   })
 }
 
 let everything = (api, parameters) => {
+  open Js.Promise
   let querystring = Parameter.buildQuerystring(parameters)
-  Fetcher.fetchArticles(api.apiKey, Fetcher.Everything, querystring) |> Js.Promise.then_(data => {
-    switch data {
-    | Ok(value: Fetcher.articleResponse) => {
-        let articles = value.articles |> Array.map(Article.fromAPI)
-        Ok(articles) |> Js.Promise.resolve
-      }
-    | Error(value) => Error(value) |> Js.Promise.resolve
-    }
+  Fetcher.fetchArticles(
+    api.apiKey,
+    Fetcher.Everything,
+    querystring,
+  ) |> then_((response: Fetcher.articlePayload) => {
+    Array.map(Article.fromAPI, response.articles) |> resolve
   })
 }
 
 let sources = (api, parameters) => {
+  open Js.Promise
   let querystring = Parameter.buildQuerystring(parameters)
-  Fetcher.fetchSources(api.apiKey, Fetcher.Sources, querystring) |> Js.Promise.then_(data => {
-    switch data {
-    | Ok(value: Fetcher.sourceResponse) => {
-        let sources = value.sources |> Array.map(Source.fromAPI)
-        Ok(sources) |> Js.Promise.resolve
-      }
-    | Error(value) => Error(value) |> Js.Promise.resolve
-    }
+  Fetcher.fetchSources(
+    api.apiKey,
+    Fetcher.Sources,
+    querystring,
+  ) |> then_((response: Fetcher.sourcePayload) => {
+    Array.map(Source.fromAPI, response.sources) |> resolve
   })
 }

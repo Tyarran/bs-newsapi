@@ -1,4 +1,4 @@
-type source = {
+type t = {
   id: string,
   name: string,
   description: string,

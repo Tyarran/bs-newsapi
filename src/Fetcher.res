@@ -1,5 +1,7 @@
 %%raw(`require('isomorphic-fetch')`)
 
+let baseUrl = "https://newsapi.org/v2/"
+
 type sourceReference = {
   id: option<string>,
   name: string,
@@ -25,21 +27,21 @@ type source = {
   country: string,
 }
 
-type articleResponse = {
+type articlePayload = {
   status: string,
   totalResults: int,
   articles: array<article>,
 }
 
-type sourceResponse = {
+type sourcePayload = {
   status: string,
   sources: array<source>,
 }
 
 type endpoint = TopHeadlines | Everything | Sources
 
-@bs.scope("JSON") @bs.val external parseArticleResponse: string => articleResponse = "parse"
-@bs.scope("JSON") @bs.val external parseSourceResponse: string => sourceResponse = "parse"
+@bs.scope("JSON") @bs.val external parseArticleResponse: string => articlePayload = "parse"
+@bs.scope("JSON") @bs.val external parseSourceResponse: string => sourcePayload = "parse"
 
 let rec buildQuerystring = (~url=?, params, paramReader) => {
   let url = switch url {
@@ -62,9 +64,9 @@ let rec buildQuerystring = (~url=?, params, paramReader) => {
 
 let fetch = (apiKey, endpoint, querystring) => {
   let url = switch endpoint {
-  | TopHeadlines => "https://newsapi.org/v2/top-headlines?" ++ querystring
-  | Everything => "https://newsapi.org/v2/everything?" ++ querystring
-  | Sources => "https://newsapi.org/v2/sources?" ++ querystring
+  | TopHeadlines => baseUrl ++ "top-headlines?" ++ querystring
+  | Everything => baseUrl ++ "everything?" ++ querystring
+  | Sources => baseUrl ++ "sources?" ++ querystring
   }
   Fetch.fetchWithInit(
     url,
@@ -72,40 +74,17 @@ let fetch = (apiKey, endpoint, querystring) => {
       ~headers=Fetch.HeadersInit.make({"Authorization": "Bearer " ++ apiKey}),
       (),
     ),
-  )
-  |> Js.Promise.then_(Fetch.Response.text)
-  |> Js.Promise.then_(text => Ok(text) |> Js.Promise.resolve)
-  |> Js.Promise.catch(_ => Error("Error") |> Js.Promise.resolve)
+  ) |> Js.Promise.then_(Fetch.Response.text)
 }
 
 let fetchArticles = (apiKey, endpoint, querystring) => {
-  let response = fetch(apiKey, endpoint, querystring)
-  response |> Js.Promise.then_(responseText => {
-    switch responseText {
-    | Ok(text) => {
-        let response = parseArticleResponse(text)
-        switch response.status {
-        | "ok" => Ok(response)
-        | _ => Error(text)
-        } |> Js.Promise.resolve
-      }
-    | Error(text) => Error(text) |> Js.Promise.resolve
-    }
-  })
+  open Js.Promise
+  let promise = fetch(apiKey, endpoint, querystring)
+  promise |> then_(text => parseArticleResponse(text) |> resolve)
 }
 
 let fetchSources = (apiKey, endpoint, querystring) => {
-  let response = fetch(apiKey, endpoint, querystring)
-  response |> Js.Promise.then_(responseText => {
-    switch responseText {
-    | Ok(text) => {
-        let response = parseSourceResponse(text)
-        switch response.status {
-        | "ok" => Ok(response)
-        | _ => Error(text)
-        } |> Js.Promise.resolve
-      }
-    | Error(text) => Error(text) |> Js.Promise.resolve
-    }
-  })
+  open Js.Promise
+  let promise = fetch(apiKey, endpoint, querystring)
+  promise |> then_(text => parseSourceResponse(text) |> resolve)
 }

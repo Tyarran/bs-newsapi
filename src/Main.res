@@ -16,23 +16,8 @@ let other = {
   list{Language(Language.Fr), Q("bitcoin")}
 }
 
-NewsAPI.topHeadlines(api, parameters) |> Js.Promise.then_(result => {
-  switch result {
-  | Ok(value) => Js.log(value) |> Js.Promise.resolve
-  | Error(value) => Js.log(value) |> Js.Promise.resolve
-  }
-})
-
-NewsAPI.everything(api, other) |> Js.Promise.then_(result => {
-  switch result {
-  | Ok(value) => Js.log(value) |> Js.Promise.resolve
-  | Error(value) => Js.log(value) |> Js.Promise.resolve
-  }
-})
-
-NewsAPI.sources(api, list{}) |> Js.Promise.then_(result => {
-  switch result {
-  | Ok(value) => Js.log(value) |> Js.Promise.resolve
-  | Error(value) => Js.log(value) |> Js.Promise.resolve
-  }
-})
+NewsAPI.topHeadlines(api, parameters) |> Js.Promise.then_(value =>
+  Js.log(value) |> Js.Promise.resolve
+)
+NewsAPI.everything(api, other) |> Js.Promise.then_(value => Js.log(value) |> Js.Promise.resolve)
+NewsAPI.sources(api, list{}) |> Js.Promise.then_(value => Js.log(value) |> Js.Promise.resolve)
