@@ -125,11 +125,7 @@ let pageSize = intParameter("pageSize")
 let page = intParameter("page")
 let apiKey = stringParameter("apiKey")
 
-let rec buildQuerystring = (~url=?, parameters) => {
-  let url = switch url {
-  | Some(url) => url
-  | None => ""
-  }
+let rec buildQuerystring = (~url="", parameters) => {
   switch parameters {
   | list{} => url
   | list{param, ...rest} => {

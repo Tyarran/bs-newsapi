@@ -8,14 +8,9 @@ let api = NewsAPI.make(apiKey)
 
 open Parameter
 
-let parameters = {
-  list{country("fr"), category("health")}
-}
+let parameters = list{country("fr"), category("health")}
 
-let other = {
-  open Parameter
-  list{language("fr"), q("bitcoin")}
-}
+let other = list{language("fr"), q("bitcoin")}
 
 NewsAPI.topHeadlines(api, parameters) |> Js.Promise.then_(value =>
   Js.log(value) |> Js.Promise.resolve
