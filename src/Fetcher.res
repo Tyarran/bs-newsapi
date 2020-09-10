@@ -43,25 +43,6 @@ type endpoint = TopHeadlines | Everything | Sources
 @bs.scope("JSON") @bs.val external parseArticleResponse: string => articlePayload = "parse"
 @bs.scope("JSON") @bs.val external parseSourceResponse: string => sourcePayload = "parse"
 
-let rec buildQuerystring = (~url=?, params, paramReader) => {
-  let url = switch url {
-  | Some(url) => url
-  | None => ""
-  }
-  switch params {
-  | list{} => url
-  | list{param, ...rest} => {
-      let (name, value) = paramReader(param)
-      let prefix = switch url {
-      | "" => ""
-      | _ => "&"
-      }
-      let newUrl = url ++ prefix ++ name ++ "=" ++ value
-      buildQuerystring(~url=newUrl, rest, paramReader)
-    }
-  }
-}
-
 let fetch = (apiKey, endpoint, querystring) => {
   let url = switch endpoint {
   | TopHeadlines => baseUrl ++ "top-headlines?" ++ querystring
@@ -74,7 +55,12 @@ let fetch = (apiKey, endpoint, querystring) => {
       ~headers=Fetch.HeadersInit.make({"Authorization": "Bearer " ++ apiKey}),
       (),
     ),
-  ) |> Js.Promise.then_(Fetch.Response.text)
+  )
+  |> Js.Promise.then_(Fetch.Response.text)
+  |> Js.Promise.catch(error => {
+    Js.log(error)
+    "error "|> Js.Promise.resolve
+    })
 }
 
 let fetchArticles = (apiKey, endpoint, querystring) => {

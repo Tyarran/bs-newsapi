@@ -4,6 +4,29 @@ let make = apiKey => {
   {apiKey: apiKey}
 }
 
+module Parameter = {
+  type t = (string, string)
+
+  let make = (name: string, value: string) => {
+    (name, value)
+  }
+
+  let rec buildQuerystring = (~url="", parameters) => {
+    switch parameters {
+    | list{} => url
+    | list{param, ...rest} => {
+        let (name, value) = param
+        let prefix = switch url {
+        | "" => ""
+        | _ => "&"
+        }
+        let newUrl = url ++ prefix ++ name ++ "=" ++ value
+        buildQuerystring(~url=newUrl, rest)
+      }
+    }
+  }
+}
+
 let topHeadlines = (api, parameters) => {
   open Js.Promise
   let querystring = Parameter.buildQuerystring(parameters)
