@@ -8,7 +8,7 @@ let api = NewsAPI.make(apiKey)
 
 let parameters = list{
   NewsAPI.Parameter.make("country", "fr"),
-  NewsAPI.Parameter.make("category", "health"),
+  NewsAPI.Parameter.make("category", "technology"),
 }
 
 let other = list{NewsAPI.Parameter.make("language", "fr"), NewsAPI.Parameter.make("q", "bitcoin")}

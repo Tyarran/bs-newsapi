@@ -11,54 +11,34 @@ module Parameter = {
     (name, value)
   }
 
-  let rec buildQuerystring = (~url="", parameters) => {
-    switch parameters {
-    | list{} => url
-    | list{param, ...rest} => {
-        let (name, value) = param
-        let prefix = switch url {
-        | "" => ""
-        | _ => "&"
-        }
-        let newUrl = url ++ prefix ++ name ++ "=" ++ value
-        buildQuerystring(~url=newUrl, rest)
+  let buildQuerystring = parameters => {
+    Belt.List.reduce(parameters, "", (acc, item) => {
+      let (name, value) = item
+      switch acc {
+      | "" => name ++ "=" ++ value
+      | _ => acc ++ "&" ++ name ++ "=" ++ value
       }
-    }
+    })
   }
 }
 
 let topHeadlines = (api, parameters) => {
-  open Js.Promise
-  let querystring = Parameter.buildQuerystring(parameters)
-  Fetcher.fetchArticles(
-    api.apiKey,
-    Fetcher.TopHeadlines,
-    querystring,
-  ) |> then_((response: Fetcher.articlePayload) => {
-    Array.map(Article.fromAPI, response.articles) |> resolve
-  })
+  Parameter.buildQuerystring(parameters)
+  |> Fetcher.url(Fetcher.TopHeadlines)
+  |> Fetcher.getFetchPromise(api.apiKey)
+  |> Fetcher.getArticles(articles => Array.map(Article.fromAPI, articles))
 }
 
 let everything = (api, parameters) => {
-  open Js.Promise
-  let querystring = Parameter.buildQuerystring(parameters)
-  Fetcher.fetchArticles(
-    api.apiKey,
-    Fetcher.Everything,
-    querystring,
-  ) |> then_((response: Fetcher.articlePayload) => {
-    Array.map(Article.fromAPI, response.articles) |> resolve
-  })
+  Parameter.buildQuerystring(parameters)
+  |> Fetcher.url(Fetcher.Everything)
+  |> Fetcher.getFetchPromise(api.apiKey)
+  |> Fetcher.getArticles(articles => Array.map(Article.fromAPI, articles))
 }
 
 let sources = (api, parameters) => {
-  open Js.Promise
-  let querystring = Parameter.buildQuerystring(parameters)
-  Fetcher.fetchSources(
-    api.apiKey,
-    Fetcher.Sources,
-    querystring,
-  ) |> then_((response: Fetcher.sourcePayload) => {
-    Array.map(Source.fromAPI, response.sources) |> resolve
-  })
+  Parameter.buildQuerystring(parameters)
+  |> Fetcher.url(Fetcher.Sources)
+  |> Fetcher.getFetchPromise(api.apiKey)
+  |> Fetcher.getSources(sources => Array.map(Source.fromAPI, sources))
 }
